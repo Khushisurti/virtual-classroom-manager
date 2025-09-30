@@ -1,46 +1,56 @@
-# Virtual Classroom Manager & Design Pattern Exercises  
 
-##  Overview  
-This repository contains my submission for the **2025-26 Coding Exercises**. The project is built in **TypeScript** and demonstrates:  
+# 📚 Virtual Classroom Manager & Design Pattern Exercises
 
-- Implementation of **behavioral, creational, and structural design patterns** (Exercise 1).  
-- A **mini console-based application** simulating a **Virtual Classroom Manager** (Exercise 2).  
-
-The focus is on **code quality, SOLID principles, defensive programming, validations, logging, and error handling**, rather than building a fancy UI.  
+![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ---
 
-##  Features  
+##  Overview
 
-### Virtual Classroom Manager  
-- Manage classrooms, students, and assignments.  
-- Schedule, submit, and track assignments.  
-- Persistent storage using JSON files.  
-- Gold-standard **logging with Winston**.  
-- **Defensive programming** & exception handling across services.  
-- Input validation for robust user experience.  
+This repository contains my submission for the **2025-26 Coding Exercises**. The project is built in **TypeScript** and demonstrates:
 
-### Design Patterns Demonstration  
--  2 Behavioral Patterns  
--  2 Creational Patterns  
--  2 Structural Patterns  
-- Each demonstrated with **separate use cases**.  
+* Implementation of **behavioral, creational, and structural design patterns** (Exercise 1).
+* A **console-based Virtual Classroom Manager** (Exercise 2).
+
+The focus is on **code quality, SOLID principles, defensive programming, validations, logging, and error handling**, rather than building a UI.
 
 ---
 
-##  Tech Stack  
-- **Language**: TypeScript (strict mode enabled)  
-- **Runtime**: Node.js  
-- **Logging**: Winston  
-- **CLI**: Node.js console app  
-- **Persistence**: File-based repositories (JSON storage)  
+##  Features
+
+### Virtual Classroom Manager
+
+* Manage classrooms, students, and assignments.
+* Schedule, submit, and track assignments.
+* **Persistent storage using JSON files** (data survives across app restarts).
+* Gold-standard **logging with Winston**.
+* **Defensive programming** & exception handling across services.
+* Input validation for robust user experience.
+
+### Design Patterns Demonstration
+
+* 2 **Behavioral** Patterns
+* 2 **Creational** Patterns
+* 2 **Structural** Patterns
+* Each with **separate use cases** and explanations.
 
 ---
 
-## Project Structure  
+##  Tech Stack
+
+* **Language**: TypeScript (strict mode enabled)
+* **Runtime**: Node.js
+* **Logging**: Winston
+* **CLI**: Node.js console app
+* **Persistence**: File-based repositories (JSON storage)
+
+---
+
+## Project Structure
 
 ```
-
 ├── src
 │   ├── app.ts                 # Main application entry point
 │   ├── index.ts               # Starts the CLI
@@ -55,16 +65,18 @@ The focus is on **code quality, SOLID principles, defensive programming, validat
 ├── package.json
 ├── tsconfig.json
 └── README.md
-
 ```
 
-### Getting Started  
+---
 
-### 1️ Clone the Repository  
+## Getting Started
+
+### 1️ Clone the Repository
+
 ```bash
 git clone https://github.com/<your-username>/<repo-name>.git
 cd <repo-name>
-````
+```
 
 ### 2️ Install Dependencies
 
@@ -74,13 +86,21 @@ npm install
 
 ### 3️ Run the Application
 
+If you have `npm start` defined:
+
+```bash
+npm start
+```
+
+Or directly via ts-node:
+
 ```bash
 npx ts-node src/index.ts
 ```
 
 ---
 
-##  Usage
+## Usage
 
 After starting, you’ll see:
 
@@ -88,29 +108,35 @@ After starting, you’ll see:
 Virtual Classroom Manager — type "help" for commands.
 ```
 
-Example commands:
+---
 
-```bash
-> add_classroom C1 "Maths Classroom"
-> add_student S1 C1 "Alice"
-> schedule_assignment C1 "Algebra Homework" "Solve equations" "2025-10-05"
-> list_assignments C1
-> submit_assignment S1 C1 <assignmentId> "Here is my homework!"
-```
+##  Command Reference
+
+| Command               | Usage                                                             | Description                   |                         |
+| --------------------- | ----------------------------------------------------------------- | ----------------------------- | ----------------------- |
+| `add_classroom`       | `add_classroom <classId> "<name>"`                                | Create a new classroom        |                         |
+| `list_classrooms`     | `list_classrooms`                                                 | View all classrooms           |                         |
+| `add_student`         | `add_student <studentId> <classId> "<studentName>"`               | Add student to classroom      |                         |
+| `remove_student`      | `remove_student <studentId> <classId>`                            | Remove a student from a class |                         |
+| `schedule_assignment` | `schedule_assignment <classId> "<title>" "<desc>" <dueDate>`      | Schedule assignment           |                         |
+| `list_assignments`    | `list_assignments <classId>`                                      | View assignments in a class   |                         |
+| `assignment_details`  | `assignment_details <assignmentId>`                               | View assignment details       |                         |
+| `submit_assignment`   | `submit_assignment <studentId> <classId> <assignmentId> "<text>"` | Submit homework               |                         |
+| `view_submissions`    | `view_submissions <classId> <assignmentId>`                       | View all submissions          |                         |
+| `student_grades`      | `student_grades <studentId> <classId>`                            | View student’s grades         |                         |
+| `set_grading`         | `set_grading <points                                              | letter>`                      | Change grading strategy |
+| `help`                | `help`                                                            | List commands                 |                         |
+| `exit`                | `exit`                                                            | Quit the app                  |                         |
 
 ---
 
-##  Sample Output
+##  Example Run
 
-```
-2025-09-30T14:37:24.171Z [info] Initializing application
-2025-09-30T14:37:24.175Z [info] Starting CLI
-Virtual Classroom Manager — type "help" for commands.
-
-> add_classroom C1
+```bash
+> add_classroom C1 "Maths Classroom"
 Classroom C1 has been created.
 
-> add_student S1 C1 Alice
+> add_student S1 C1 "Alice"
 Student S1 has been enrolled in C1.
 
 > schedule_assignment C1 "Algebra Homework" "Solve equations" 2025-10-05
@@ -130,11 +156,20 @@ Assignment submitted by Student S1 in C1.
 
 Inside `/src/patterns/`, you’ll find:
 
-* **Behavioral**: Strategy, Observer
-* **Creational**: Factory Method, Singleton
-* **Structural**: Adapter, Decorator
+* **Behavioral**
 
-Each pattern has its **own use case with documentation** inside the file.
+  * *Strategy* → grading system (letter vs points)
+  * *Observer* → notify on assignment submission
+
+* **Creational**
+
+  * *Factory Method* → create repositories
+  * *Singleton* → shared Winston logger
+
+* **Structural**
+
+  * *Adapter* → adapt file persistence for repository interface
+  * *Decorator* → extend assignment objects with grading details
 
 ---
 
@@ -148,12 +183,12 @@ Each pattern has its **own use case with documentation** inside the file.
 
 ---
 
-##  How to Walk Through in Interview
+## How to Walk Through in Interview
 
 1. Start with **`app.ts`** → explain initialization flow.
 2. Show **repository layer (FileRepository)** → persistence strategy.
 3. Show **service layer** → business rules + defensive checks.
-4. Walk through **CommandController** → maps CLI commands to services.
+4. Walk through **CommandController** → CLI commands → services.
 5. Highlight **Logger** → Winston-based, file + console.
 6. Demonstrate **Design Patterns** with the 6 use cases.
 
@@ -163,8 +198,3 @@ Each pattern has its **own use case with documentation** inside the file.
 
 This project is for educational purposes as part of the **2025-26 Coding Exercises**.
 
-```
-
----
-
-```
