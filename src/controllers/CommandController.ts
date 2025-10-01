@@ -89,11 +89,84 @@ export class CommandController {
                 const className = tokens[2];
                 const assignmentId = tokens[3];
                 const text = tokens[4] || '';
-                if (!studentId || !className || !assignmentId) { console.log('Usage: submit_assignment <studentId> <className> "<assignmentId>" "<submissionText>"'); break; }
-                await this.assignmentService.submitAssignment(studentId, className, assignmentId, text);
-                console.log(`Assignment submitted by Student ${studentId} in ${className}.`);
+                if (!studentId || !className || !assignmentId) {
+                    console.log('Usage: submit_assignment <studentId> <className> <assignmentId> "<submissionText>"');
+                    break;
+                }
+                try {
+                    const result = await this.assignmentService.submitAssignment(studentId, className, assignmentId, text);
+                    console.log(`Assignment submitted by Student ${studentId} in ${className}.`);
+                    console.log(`Score: ${result.score}, Grade: ${result.grade}, Pass: ${result.pass ? 'Yes' : 'No'}`);
+                } catch (err: any) {
+                    console.error('Error handling command:', err.message);
+                }
                 break;
             }
+            case 'set_grading': {
+                const type = tokens[1];
+                if (!type) {
+                    console.log('Usage: set_grading <points|letter>');
+                    break;
+                }
+                if (type.toLowerCase() === 'points') {
+                    const { PointsGrading } = await import('../patterns/behavioral/GradingStrategy');
+                    this.assignmentService.setGradingStrategy(new PointsGrading());
+                    console.log('Grading strategy set to Points (0–100).');
+                } else if (type.toLowerCase() === 'letter') {
+                    const { LetterGrading } = await import('../patterns/behavioral/GradingStrategy');
+                    this.assignmentService.setGradingStrategy(new LetterGrading());
+                    console.log('Grading strategy set to Letters (A–F).');
+                } else {
+                    console.log('Unknown grading type. Use "points" or "letter".');
+                }
+                break;
+            }
+            case 'view_submissions': {
+                const className = tokens[1];
+                const assignmentId = tokens[2];
+                if (!className || !assignmentId) {
+                    console.log('Usage: view_submissions <className> <assignmentId>');
+                    break;
+                }
+                try {
+                    const submissions = await this.assignmentService.viewSubmissions(className, assignmentId);
+                    if (submissions.length === 0) {
+                        console.log(`No submissions found for assignment ${assignmentId} in ${className}.`);
+                    } else {
+                        console.log(`Submissions for assignment ${assignmentId} in ${className}:`);
+                        for (const sub of submissions) {
+                            console.log(`- ${sub.studentId}: "${sub.text}" at ${sub.submittedAt}`);
+                        }
+                    }
+                } catch (err: any) {
+                    console.error('Error handling command:', err.message);
+                }
+                break;
+            }
+
+            case 'student_grades': {
+                const studentId = tokens[1];
+                const className = tokens[2];
+                if (!studentId || !className) {
+                    console.log('Usage: student_grades <studentId> <className>');
+                    break;
+                }
+                try {
+                    const grades = await this.assignmentService.getStudentGrades(studentId, className);
+                    if (grades.length === 0) {
+                        console.log(`No grades found for Student ${studentId} in ${className}.`);
+                    } else {
+                        console.log(`Grades for Student ${studentId} in ${className}:`);
+                        for (const g of grades) {
+                            console.log(`- ${g.title}: Score ${g.score}, Grade ${g.grade}, Pass ${g.pass ? 'Yes' : 'No'}`);
+                        }
+                    }
+                } catch (err: any) {
+                    console.error('Error handling command:', err.message);
+                }
+                break;
+            }
+
 
             case 'help': {
                 console.log([
@@ -105,7 +178,7 @@ export class CommandController {
                     ' list_students <className>',
                     ' schedule_assignment <className> "<title>" "<description>" <dueISO>',
                     ' list_assignments <className>',
-                    ' submit_assignment <studentId> <className> "<assignmentId>" "<submissionText>"',
+                    ' submit_assignment <studentId> <className> <assignmentId> "<submissionText>"',
                     ' help',
                     ' exit'
                 ].join('\n'));

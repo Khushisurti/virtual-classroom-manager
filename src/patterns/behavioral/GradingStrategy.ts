@@ -1,18 +1,18 @@
-export interface GradingStrategy {
-    grade(submissionText: string): { score: number; pass: boolean };
-}
 
-export class PassFailStrategy implements GradingStrategy {
-    grade(submissionText: string) {
-        const pass = submissionText.trim().length > 10;
-        return { score: pass ? 100 : 0, pass };
+export interface GradingStrategy {
+    calculateGrade(score: number): string;
+}
+export class PointsGrading implements GradingStrategy {
+    calculateGrade(score: number): string {
+        return `${score}/100`;
     }
 }
-
-export class WordCountStrategy implements GradingStrategy {
-    grade(submissionText: string) {
-        const wc = submissionText.trim().split(/\s+/).filter(Boolean).length;
-        const score = Math.min(100, wc * 2);
-        return { score, pass: score >= 50 };
+export class LetterGrading implements GradingStrategy {
+    calculateGrade(score: number): string {
+        if (score >= 90) return "A";
+        if (score >= 80) return "B";
+        if (score >= 70) return "C";
+        if (score >= 60) return "D";
+        return "F";
     }
 }
